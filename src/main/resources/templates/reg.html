@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="../js/layer/layer.js"></script>
+    <link rel="stylesheet" href="../js/layer/theme/default/layer.css">
+    <title>录入信息</title>
+</head>
+<style>
+    body{
+        background-image:  url("../images/bg7.png");
+        background-repeat:no-repeat;
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+        background-color: #fdf4cf;
+        background-size:100%;
+    }
+
+</style>
+<body>
+
+    <div class="container-fluid" style="margin-top: 85%;">
+
+        <form id="luckyUser" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputName" class="col-xs-3 control-label text-center">
+                    <h5>姓名:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="text" name="name" maxlength="4" min="2" class="form-control" id="inputName" placeholder="请输入您的姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label text-center" >
+                    <h5>性别:</h5>
+                </label>
+                <div class="col-xs-9">
+                   <select name="sex" class="form-control">
+                       <option value="1">男</option>
+                       <option value="0">女</option>
+                   </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label text-center">
+                    <h5>头像:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <button type="button" id="i-check" class="btn btn-block btn-info" style="border-radius: 4px;" onclick="$('#i-file').click();">
+                                <i class="glyphicon glyphicon-camera"></i>浏览
+                            </button>
+                        </label>
+                    </div>
+
+                    <input type="file" name="imgFile" id='i-file'  accept="image/*" onchange="$('#location').attr('src',$('#i-file').val());" style="display: none">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label text-center">
+                    <h5>电话:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="number" pattern="\d*" name="phoneNumber" oninput="if(value.length>11)value=value.slice(0,11)"  class="form-control" placeholder="请输入您的电话">
+                </div>
+            </div>
+
+        </form>
+        <div class="footer" style="margin-bottom: 10px;">
+            <button id="saveBtn" class="btn btn-lg btn-block btn-success"><i class="glyphicon glyphicon-ok"></i> 提交 </button>
+        </div>
+    </div>
+</body>
+<script>
+    
+    $("#saveBtn").click(function () {
+        var form = new FormData(document.getElementById("luckyUser"));
+        $.ajax({
+            url:"../lucky/save",
+            type:"post",
+            data:form,
+            processData:false,
+            contentType:false,
+            dataType:'json',
+            async:false,
+            timeout:6000,
+            success:function(data){
+                layer.alert(data.msg,{icon:data.icon})
+            },
+            error:function(e){
+                layer.alert("参与失败了,请联系工作人员",{icon:5});
+            }
+        });
+
+    })
+    
+</script>
+</html>

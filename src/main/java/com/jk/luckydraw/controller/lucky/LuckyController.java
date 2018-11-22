@@ -1,0 +1,45 @@
+package com.jk.luckydraw.controller.lucky;
+
+import com.jk.luckydraw.domain.user.LuckyUserBean;
+import com.jk.luckydraw.service.lucky.LuckyUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+
+@Controller
+@RequestMapping("lucky")
+public class LuckyController {
+
+    @Autowired
+    private LuckyUserService luckyUserService;
+
+    /**
+     * 保存参与人员信息
+     * @param luckyUserBean
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping("save")
+    @ResponseBody
+    public HashMap save(LuckyUserBean luckyUserBean,@RequestParam("imgFile") MultipartFile file, HttpServletRequest request){
+        return luckyUserService.save(luckyUserBean,file,request);
+    }
+
+
+    /**
+     * 跳转注册抽奖用户信息页面
+     * @return
+     */
+    @RequestMapping("reg")
+    public String toReg(){
+        return "reg";
+    }
+}
