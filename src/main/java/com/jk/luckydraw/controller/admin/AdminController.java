@@ -1,14 +1,22 @@
 package com.jk.luckydraw.controller.admin;
 
+import com.jk.luckydraw.domain.prize.PrizeBean;
 import com.jk.luckydraw.domain.user.UserBean;
+import com.jk.luckydraw.mapper.prize.PrizeMapper;
+import com.jk.luckydraw.service.prize.PrizeService;
 import com.jk.luckydraw.service.user.UserService;
+import com.jk.luckydraw.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("admin")
@@ -17,6 +25,112 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PrizeService prizeService;
+
+    @Value("${img.location}")
+    private String location;
+
+    @Value("${img.serverpath}")
+    private String serverpath;
+
+    /**
+     * 删除奖品
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delPrize")
+    @ResponseBody
+    public Boolean delPrize(Integer[] ids){
+        try {
+            prizeService.delPrize(ids);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /**
+     * 保存奖品
+     * @param prizeBean
+     * @param request
+     * @return
+     */
+    @RequestMapping("savePrize")
+    @ResponseBody
+    private Boolean savePrize(PrizeBean prizeBean,HttpServletRequest request){
+        try {
+            HttpSession session = request.getSession();
+            UserBean attribute = (UserBean) session.getAttribute(session.getId());
+            prizeBean.setUserId(attribute.getId());
+            prizeBean.setImg(serverpath+prizeBean.getImg());
+            prizeService.savePrize(prizeBean);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * 图片上传
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping("upload")
+    @ResponseBody
+    public HashMap upload(MultipartFile file,HttpServletRequest request){
+        HashMap<String, Object> result = new HashMap<>();
+        String fileUpload = FileUtil.FileUpload(file, request, location);
+        result.put("code",0);
+        result.put("imgName",fileUpload);
+        return result;
+    }
+
+    /**
+     * 跳转添加奖品页
+     * @return
+     */
+    @RequestMapping("toAddPrizePage")
+    public String toAddPrizePage(){
+        return "addprize";
+    }
+
+    /**
+     * 跳转奖品配置页
+     * @return
+     */
+    @RequestMapping("toPrizePage")
+    public String toPrizePage(){
+        return "prize";
+    }
+
+    /**
+     * 查看奖品列表
+     * @return
+     */
+    @RequestMapping("findPriceListPage")
+    @ResponseBody
+    public HashMap<String, Object> findPriceListPage(){
+        HashMap<String, Object> result = new HashMap<>();
+        int count = prizeService.findPrizeCount();
+        List<PrizeBean> priceList = prizeService.findPrizeList();
+        result.put("data",priceList);
+        result.put("code",0);
+        result.put("count",count);
+        return result;
+    }
+
+    @RequestMapping("findPriceList")
+    @ResponseBody
+    public List<PrizeBean> findPriceList(){
+        return prizeService.findPrizeList();
+    }
+
+    /**
+     * 获取抽奖人员列表
+     * @return
+     */
     @RequestMapping("luckyUser")
     @ResponseBody
     public HashMap luckyUser(){

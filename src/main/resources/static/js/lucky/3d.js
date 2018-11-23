@@ -1,5 +1,6 @@
 var personArray=new Array;
 $(function() {
+
     $.ajax({
         url: '../admin/luckyUser',
         type: 'post',
@@ -20,6 +21,7 @@ $(function() {
 
         }
     })
+
     $.fn.lucky = function(opt) {
         var opts = {
             row: 7,

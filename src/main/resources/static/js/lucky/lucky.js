@@ -155,5 +155,26 @@ $(function() {
         $(".lucky_prize_title").html($('.lucky_prize_show').eq(i - 1).attr('alt'));
         $('.lpl_list').removeClass('active').hide().eq(i - 1).show().addClass('active');
     }
-    tabPrize();
+    $.ajax({
+        url:'../admin/findPriceList',
+        type:'post',
+        data:{},
+        async:false,
+        dataType:'json',
+        success:function(data){
+            var html = "";
+            for (var i = 0;i < data.length;i++) {
+                if (i == 0){
+                    $(".lucky_prize_title").text(data[i].name);
+                    html += "<img class='lucky_prize_show' src='"+data[i].img+"' alt='"+data[i].name+"'/>"
+
+                } else{
+                    html += "<img class='none lucky_prize_show' src='"+data[i].img+"' alt='"+data[i].name+"'/>"
+                }
+            }
+            $(".lucky_prize_picture").html(html);
+            tabPrize();
+        }
+    })
+
 })
