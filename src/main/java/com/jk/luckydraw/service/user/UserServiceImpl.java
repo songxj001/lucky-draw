@@ -1,6 +1,7 @@
 package com.jk.luckydraw.service.user;
 
 import com.jk.luckydraw.domain.lucky.LuckyPersonBean;
+import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.domain.user.UserBean;
 import com.jk.luckydraw.mapper.user.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,20 @@ public class UserServiceImpl implements UserService {
         List<LuckyPersonBean> users = userMapper.findLuckyUserList();
         result.put("users",users);
         return result;
+    }
+
+    @Override
+    public int findPeopleCount() {
+        return userMapper.findLuckyUserCount();
+    }
+
+    @Override
+    public List<LuckyUserBean> findPeopleList() {
+        return userMapper.findPeopleList();
+    }
+
+    @Override
+    public void delPeople(Integer[] ids) {
+        userMapper.delPeople(ids);
     }
 }

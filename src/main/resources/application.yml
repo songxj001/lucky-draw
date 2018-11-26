@@ -1,26 +1,3 @@
-server:
-  port: ${prot:80}
-  tomcat:
-    uri-encoding: UTF-8
-  connection-timeout: 180000
 spring:
-  datasource:
-    url: jdbc:mysql://${jdbchost:127.0.0.1}:3306/jk?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 0
-      max-file-size: 1024
-      max-request-size: 1024
-img:
-  location: ${location:/Users/songxuejun/work/tools/imgserver/apache-tomcat-8.5.31/webapps/ROOT/}
-  serverpath: ${serverpath:http://127.0.0.1:8081/}
-
-
-
+  profiles:
+    active: dev

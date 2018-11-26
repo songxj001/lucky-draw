@@ -1,6 +1,7 @@
 package com.jk.luckydraw.controller.admin;
 
 import com.jk.luckydraw.domain.prize.PrizeBean;
+import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.domain.user.UserBean;
 import com.jk.luckydraw.mapper.prize.PrizeMapper;
 import com.jk.luckydraw.service.prize.PrizeService;
@@ -33,6 +34,43 @@ public class AdminController {
 
     @Value("${img.serverpath}")
     private String serverpath;
+
+    @RequestMapping("delPeople")
+    @ResponseBody
+    public Boolean delPeople(Integer[] ids){
+        try {
+            userService.delPeople(ids);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 查询抽奖用户列表
+     * @return
+     */
+    @RequestMapping("findPeopleListPage")
+    @ResponseBody
+    public HashMap findPeopleListPage(){
+        HashMap<String, Object> result = new HashMap<>();
+        int count = userService.findPeopleCount();
+        List<LuckyUserBean> luckyUserBeans = userService.findPeopleList();
+        result.put("data",luckyUserBeans);
+        result.put("code",0);
+        result.put("count",count);
+        return result;
+    }
+
+    /**
+     * 跳转抽奖人列表页面
+     * @return
+     */
+    @RequestMapping("toPeoplePage")
+    public String toPeoplePage(){
+        return "people";
+    }
 
     /**
      * 删除奖品

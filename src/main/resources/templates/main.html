@@ -24,6 +24,9 @@
         cursor:pointer;
         float: right;
     }
+    #personBtn{
+         cursor:pointer;
+    }
 </style>
 <body>
 <div class="container none"></div>
@@ -49,7 +52,7 @@
         <div class="lucky_prize_title">奖品名称
         </div>
         <div class="lucky_setting" style="text-align: center;">
-            <span class="">
+            <span id="personBtn">
                 <b class="lucky_number">0</b>人参与
             </span>
         </div>
@@ -68,6 +71,18 @@
 </div>
 </body>
 <script>
+    $("#personBtn").click(function () {
+        layer.open({
+            type: 2,
+            skin: 'layui-layer-molv',
+            title: '参加人员',
+            shadeClose: true,
+            shade: 0.5,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['950px', '700px'],
+            content: '../admin/toPeoplePage'
+        });
+    })
     $("#setting").click(function () {
         layer.open({
             type: 2,

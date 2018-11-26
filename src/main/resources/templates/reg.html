@@ -80,6 +80,7 @@
 <script>
     
     $("#saveBtn").click(function () {
+        var index = layer.load(0, {shade: false});
         var form = new FormData(document.getElementById("luckyUser"));
         $.ajax({
             url:"../lucky/save",
@@ -91,9 +92,11 @@
             async:false,
             timeout:6000,
             success:function(data){
+                layer.close(index);
                 layer.alert(data.msg,{icon:data.icon})
             },
             error:function(e){
+                layer.close(index);
                 layer.alert("参与失败了,请联系工作人员",{icon:5});
             }
         });
