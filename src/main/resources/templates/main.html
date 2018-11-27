@@ -27,6 +27,9 @@
     #personBtn{
          cursor:pointer;
     }
+    .lucky_people_title{
+        cursor:pointer;
+    }
 </style>
 <body>
 <div class="container none"></div>
@@ -71,6 +74,18 @@
 </div>
 </body>
 <script>
+    $(".lucky_people_title").click(function () {
+        layer.open({
+            type: 2,
+            skin: 'layui-layer-molv',
+            title: '中奖人员名单',
+            shadeClose: true,
+            shade: 0.5,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['950px', '700px'],
+            content: '../admin/toLuckyHistoryPage'
+        });
+    })
     $("#personBtn").click(function () {
         layer.open({
             type: 2,

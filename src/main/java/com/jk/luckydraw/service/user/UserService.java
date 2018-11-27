@@ -1,5 +1,6 @@
 package com.jk.luckydraw.service.user;
 
+import com.jk.luckydraw.domain.lucky.LuckyHistoryBean;
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.domain.user.UserBean;
 
@@ -18,4 +19,12 @@ public interface UserService {
     List<LuckyUserBean> findPeopleList();
 
     void delPeople(Integer[] ids);
+
+    void saveLuckyUser(Integer userId, Integer prizeId);
+
+    int findLuckyHistoryCount();
+
+    List<LuckyHistoryBean> findLuckyHistoryList();
+
+    void delLuckyHistory(Integer[] ids);
 }

@@ -2,6 +2,7 @@ $(function() {
     var Obj = {};
     Obj.luckyResult = [];
     Obj.luckyPrize = '';
+    Obj.luckyPrizeArr = [];
     Obj.luckyPerple = [];
     Obj.luckyNum = $(".select_lucky_number").val();
     $(".select_lucky_number").bind('change', function() {
@@ -39,6 +40,20 @@ $(function() {
     });
 
     function showLuckyPeople(num) {
+        var userId = personArray[Obj.luckyResult[num]].id;
+        var prizeId = Obj.luckyPrizeArr[Obj.luckyPrize-1].id;
+        $.ajax({
+            url:'../admin/saveLuckyUser',
+            type:'post',
+            data:{
+                userId:userId,
+                prizeId:prizeId
+            },
+            dataType:'json',
+            success:function (data) {
+
+            }
+        })
         setTimeout(function() {
             var $luckyEle = $('<img class="lucky_icon" />');
             var $userName = $('<p class="lucky_userName"></p>');
@@ -164,6 +179,7 @@ $(function() {
         success:function(data){
             var html = "";
             for (var i = 0;i < data.length;i++) {
+                Obj.luckyPrizeArr.push(data[i]);
                 if (i == 0){
                     $(".lucky_prize_title").text(data[i].name);
                     html += "<img class='lucky_prize_show' src='"+data[i].img+"' alt='"+data[i].name+"'/>"
@@ -176,5 +192,17 @@ $(function() {
             tabPrize();
         }
     })
+
+    $.ajax({
+        url:'../admin/findLuckyHistoryList',
+        type:'post',
+        data:{},
+        async:false,
+        dataType:'json',
+        success:function(data){
+            Obj.luckyPerple = data.data;
+        }
+    })
+
 
 })

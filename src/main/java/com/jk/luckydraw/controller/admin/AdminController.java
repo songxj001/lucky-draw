@@ -1,5 +1,6 @@
 package com.jk.luckydraw.controller.admin;
 
+import com.jk.luckydraw.domain.lucky.LuckyHistoryBean;
 import com.jk.luckydraw.domain.prize.PrizeBean;
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.domain.user.UserBean;
@@ -35,6 +36,64 @@ public class AdminController {
     @Value("${img.serverpath}")
     private String serverpath;
 
+    @RequestMapping("delLuckyHistory")
+    @ResponseBody
+    public Boolean delLuckyHistory(Integer[] ids){
+        try{
+            userService.delLuckyHistory(ids);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * 查询中奖人员历史信息
+     * @return
+     */
+    @RequestMapping("findLuckyHistoryList")
+    @ResponseBody
+    public HashMap findLuckyHistoryList(){
+        HashMap<String, Object> result = new HashMap<>();
+        int count = userService.findLuckyHistoryCount();
+        List<LuckyHistoryBean> luckyUserBeans = userService.findLuckyHistoryList();
+        result.put("data",luckyUserBeans);
+        result.put("code",0);
+        result.put("count",count);
+        return result;
+    }
+
+    /**
+     * 跳转中奖历史记录查询页
+     * @return
+     */
+    @RequestMapping("toLuckyHistoryPage")
+    public String toLuckyHistoryPage(){
+        return "luckyhistory";
+    }
+
+    /**
+     * 保存中奖历史信息
+     * @param userId
+     * @param prizeId
+     * @return
+     */
+    @RequestMapping("saveLuckyUser")
+    @ResponseBody
+    public Boolean saveLuckyUser(Integer userId,Integer prizeId){
+        try{
+            userService.saveLuckyUser(userId,prizeId);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * 删除参与人员
+     * @param ids
+     * @return
+     */
     @RequestMapping("delPeople")
     @ResponseBody
     public Boolean delPeople(Integer[] ids){

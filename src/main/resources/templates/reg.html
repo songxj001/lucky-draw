@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../js/bootstrap-3.3.7-dist/css/bootstrap.css">
     <script src="../js/layer/layer.js"></script>
     <link rel="stylesheet" href="../js/layer/theme/default/layer.css">
+    <script src="../js/fingerprint2.min.1.5.1.js"></script>
+
     <title>录入信息</title>
 </head>
 <style>
@@ -78,28 +80,35 @@
     </div>
 </body>
 <script>
-    
     $("#saveBtn").click(function () {
         var index = layer.load(0, {shade: false});
-        var form = new FormData(document.getElementById("luckyUser"));
-        $.ajax({
-            url:"../lucky/save",
-            type:"post",
-            data:form,
-            processData:false,
-            contentType:false,
-            dataType:'json',
-            async:false,
-            timeout:6000,
-            success:function(data){
-                layer.close(index);
-                layer.alert(data.msg,{icon:data.icon})
-            },
-            error:function(e){
-                layer.close(index);
-                layer.alert("参与失败了,请联系工作人员",{icon:5});
-            }
+        //获取浏览器指纹
+        var fp = new Fingerprint2();
+        fp.get(function(result){
+            var form = new FormData(document.getElementById("luckyUser"));
+            $.ajax({
+                url:"../lucky/save",
+                headers: {
+                    mac: result
+                },
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                dataType:'json',
+                async:false,
+                timeout:6000,
+                success:function(data){
+                    layer.close(index);
+                    layer.alert(data.msg,{icon:data.icon})
+                },
+                error:function(e){
+                    layer.close(index);
+                    layer.alert("参与失败了,请联系工作人员",{icon:5});
+                }
+            });
         });
+
 
     })
     

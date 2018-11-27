@@ -33,7 +33,6 @@ public class LuckyController {
     public HashMap save(LuckyUserBean luckyUserBean,@RequestParam("imgFile") MultipartFile file, HttpServletRequest request){
         String userAgent = request.getHeader("user-agent");
         if (userAgent.indexOf("MicroMessenger") > 0){
-            luckyUserBean.setIp(IpUtil.getIpAddr(request));
             return luckyUserService.save(luckyUserBean,file,request);
         }else{
             HashMap<String, Object> result = new HashMap<>();

@@ -3,6 +3,8 @@ package com.jk.luckydraw.service.lucky;
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.mapper.lucky.LuckyUserMapper;
 import com.jk.luckydraw.utils.FileUtil;
+import com.jk.luckydraw.utils.GetMacAddress;
+import com.jk.luckydraw.utils.IpUtil;
 import com.jk.luckydraw.utils.MacUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +29,10 @@ public class LuckyUserServiceImpl implements LuckyUserService {
     @Override
     public HashMap save(LuckyUserBean luckyUserBean, MultipartFile fileImg, HttpServletRequest request) {
         HashMap<String, Object> result = new HashMap<>();
-        //获取用户的mac地址
-        luckyUserBean.setMac(MacUtil.getMac(request));
+        luckyUserBean.setIp(IpUtil.getIpAddr(request));
+        //获取用户的浏览器指纹
+        String mac = request.getHeader("mac");
+        luckyUserBean.setMac(mac);
         //检查用户是否参与过
         int count = luckyUserMapper.checkUser(luckyUserBean);
         if (count > 0){
