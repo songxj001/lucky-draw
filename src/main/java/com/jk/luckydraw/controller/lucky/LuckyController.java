@@ -2,6 +2,7 @@ package com.jk.luckydraw.controller.lucky;
 
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.service.lucky.LuckyUserService;
+import com.jk.luckydraw.utils.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class LuckyController {
     public HashMap save(LuckyUserBean luckyUserBean,@RequestParam("imgFile") MultipartFile file, HttpServletRequest request){
         String userAgent = request.getHeader("user-agent");
         if (userAgent.indexOf("MicroMessenger") > 0){
+            luckyUserBean.setIp(IpUtil.getIpAddr(request));
             return luckyUserService.save(luckyUserBean,file,request);
         }else{
             HashMap<String, Object> result = new HashMap<>();
