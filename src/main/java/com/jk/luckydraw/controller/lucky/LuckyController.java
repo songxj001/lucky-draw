@@ -30,7 +30,17 @@ public class LuckyController {
     @RequestMapping("save")
     @ResponseBody
     public HashMap save(LuckyUserBean luckyUserBean,@RequestParam("imgFile") MultipartFile file, HttpServletRequest request){
-        return luckyUserService.save(luckyUserBean,file,request);
+        String userAgent = request.getHeader("user-agent");
+        if (userAgent.indexOf("MicroMessenger") > 0){
+            return luckyUserService.save(luckyUserBean,file,request);
+        }else{
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("code",3);
+            result.put("msg","请使用微信客户端打开");
+            result.put("icon",0);
+            return result;
+        }
+
     }
 
 
@@ -39,7 +49,12 @@ public class LuckyController {
      * @return
      */
     @RequestMapping("reg")
-    public String toReg(){
-        return "reg";
+    public String toReg(HttpServletRequest request){
+        String userAgent = request.getHeader("user-agent");
+        if (userAgent.indexOf("MicroMessenger") > 0){
+            return "reg";
+        }else{
+            return "error";
+        }
     }
 }
