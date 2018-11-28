@@ -20,7 +20,7 @@ spring:
       max-request-size: 1024
 img:
   location: /root/lucky/imgservice/apache-tomcat-8.5.31/webapps/ROOT/
-  serverpath: http://123.56.196.195:8082/
+  serverpath: http://www.jinkeit.cn:8082/
 
 
 
