@@ -12,7 +12,7 @@
     <script type="text/html" id="toolbar">
         <div class="layui-btn-container">
             <button class="layui-btn layui-btn-sm" onclick="addBtn()">增加</button>
-            <button class="layui-btn layui-btn-sm" >编辑</button>
+           <!-- <button class="layui-btn layui-btn-sm" >编辑</button>-->
             <button class="layui-btn layui-btn-sm" onclick="deleteBtn()">删除</button>
         </div>
     </script>
@@ -60,14 +60,17 @@
                 yes:function(index, layero){
                     var body = layer.getChildFrame('body', index);
                     var iframeWin = window[layero.find('iframe')[0]['name']];//得到iframe页的窗口对象，执行iframe页的方法：
-                    iframeWin.save();//调用子页面的方法，得到子页面返回的ids
-                    layer.close(index);//需要手动关闭窗口
-                    layui.use('table', function() {
-                        var table = layui.table;
-                        table.reload('prizeTableId',{
+                    var flag = iframeWin.save();//调用子页面的方法，得到子页面返回的ids
+                    if (flag == true){
+                        layer.close(index);//需要手动关闭窗口
+                        layui.use('table', function() {
+                            var table = layui.table;
+                            table.reload('prizeTableId',{
 
+                            });
                         });
-                    });
+                    }
+
                 },
                 btn2:function(){
                     layer.close();
@@ -87,19 +90,25 @@
                 for (var i = 0; i < checkStatus.data.length; i++) {
                     ids += ids == "" ? checkStatus.data[i].id : ","+checkStatus.data[i].id
                 }
-                $.ajax({
-                    url:'../admin/delPrize',
-                    type:'post',
-                    data:{
-                        ids:ids
-                    },
-                    dataType:'json',
-                    success:function (data) {
-                        table.reload('prizeTableId',{
+                layer.confirm('确定要删除吗？',function (r) {
+                    if (r){
+                        layer.close(layer.index);
+                        $.ajax({
+                            url:'../admin/delPrize',
+                            type:'post',
+                            data:{
+                                ids:ids
+                            },
+                            dataType:'json',
+                            success:function (data) {
+                                table.reload('prizeTableId',{
 
-                        });
+                                });
+                            }
+                        })
                     }
                 })
+
             })
         }
     </script>

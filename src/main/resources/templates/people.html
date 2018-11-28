@@ -62,19 +62,25 @@
             for (var i = 0; i < checkStatus.data.length; i++) {
                 ids += ids == "" ? checkStatus.data[i].id : ","+checkStatus.data[i].id
             }
-            $.ajax({
-                url:'../admin/delPeople',
-                type:'post',
-                data:{
-                    ids:ids
-                },
-                dataType:'json',
-                success:function (data) {
-                    table.reload('prizeTableId',{
+            layer.confirm('确定要删除吗？',function (r) {
+                layer.close(layer.index);
+                if (r){
+                    $.ajax({
+                        url:'../admin/delPeople',
+                        type:'post',
+                        data:{
+                            ids:ids
+                        },
+                        dataType:'json',
+                        success:function (data) {
+                            table.reload('prizeTableId',{
 
-                    });
+                            });
+                        }
+                    })
                 }
             })
+
         })
     }
 

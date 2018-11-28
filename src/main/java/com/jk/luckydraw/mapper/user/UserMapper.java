@@ -24,7 +24,7 @@ public interface UserMapper {
     @Select("select id,name,photo as image,photo as thumb_image from t_lucky_user order by createTime desc")
     List<LuckyPersonBean> findLuckyUserList();
 
-    @Select("select * from t_lucky_user")
+    @Select("select * from t_lucky_user order by createTime desc")
     List<LuckyUserBean> findPeopleList();
 
     @DeleteProvider(type = UserMapper.Provider.class, method = "batchDelete")
@@ -36,7 +36,7 @@ public interface UserMapper {
     @Select("select count(1) from t_lucky_history")
     int findLuckyHistoryCount();
 
-    @Select("select tlh.id,tlu.name,tlu.phoneNumber,tlu.photo,tp.name as prizeName,tlh.createTime from t_lucky_history tlh left join t_prize tp on tlh.prizeId = tp.id left join t_lucky_user tlu on tlh.luckyUserId = tlu.id")
+    @Select("select tlh.id,tlu.name,tlu.phoneNumber,tlu.photo,tp.name as prizeName,tlh.createTime from t_lucky_history tlh left join t_prize tp on tlh.prizeId = tp.id left join t_lucky_user tlu on tlh.luckyUserId = tlu.id order by tlh.createTime desc")
     List<LuckyHistoryBean> findLuckyHistoryList();
 
     @DeleteProvider(type = UserMapper.Provider.class, method = "batchDeleteLuckyHistory")

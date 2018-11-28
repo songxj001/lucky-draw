@@ -177,6 +177,11 @@ $(function() {
         async:false,
         dataType:'json',
         success:function(data){
+            var html2 = ""
+            for (var i = 0; i < data.length; i++) {
+                html2 += '<div class="lpl_list clearfix none"></div>';
+            }
+            $(".lucky_people_title").append(html2);
             var html = "";
             for (var i = 0;i < data.length;i++) {
                 Obj.luckyPrizeArr.push(data[i]);

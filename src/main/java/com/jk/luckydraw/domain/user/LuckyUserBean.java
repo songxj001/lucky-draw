@@ -24,7 +24,7 @@ public class LuckyUserBean {
     private String ip;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT-6")
     private Date createTime;
 
 }

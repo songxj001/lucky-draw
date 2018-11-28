@@ -22,6 +22,7 @@
                     <i class="layui-icon"></i>
                     <p>点击上传，或将文件拖拽到此处</p>
                 </div>
+                <img src="" width="150px" height="150px" style="float: right" id="showImg"/>
                 <input type="hidden" name="img" id="hideImg"/>
             </div>
             <div class="layui-form-item">
@@ -43,6 +44,7 @@
            ,done: function(res){
                if (res.code == 0){
                    layer.alert("上传成功",{icon:6});
+                   $("#showImg").attr("src",res.imgName);
                    $("#hideImg").val(res.imgName);
                }else{
                    layer.alert("上传失败",{icon:2})
@@ -55,15 +57,25 @@
     })
 
     function save(){
+       var name = $("input[name='name']").val();
+       var sort = $("input[name='sort']").val();
+       var hideImg = $("#hideImg").val();
+       if(name == null || name == '' || sort == null || sort == '' || hideImg == null || hideImg == ''){
+           layer.alert("请填写完成页面数据在提交哦",{icon:6});
+           return false;
+       }
+       var flag = false;
        $.ajax({
            url:'../admin/savePrize',
            type:'post',
+           async:false,
            data:$("#prizeForm").serialize(),
            dataType:"json",
            success:function (data) {
-               return data;
+               flag = data;
            }
        })
+        return flag;
     }
 </script>
 </html>

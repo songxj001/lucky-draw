@@ -160,7 +160,6 @@ public class AdminController {
             HttpSession session = request.getSession();
             UserBean attribute = (UserBean) session.getAttribute(session.getId());
             prizeBean.setUserId(attribute.getId());
-            prizeBean.setImg(serverpath+prizeBean.getImg());
             prizeService.savePrize(prizeBean);
             return true;
         }catch (Exception e){
@@ -180,7 +179,8 @@ public class AdminController {
         HashMap<String, Object> result = new HashMap<>();
         String fileUpload = FileUtil.FileUpload(file, request, location);
         result.put("code",0);
-        result.put("imgName",fileUpload);
+
+        result.put("imgName",serverpath+fileUpload);
         return result;
     }
 
