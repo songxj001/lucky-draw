@@ -9,6 +9,8 @@ import com.jk.luckydraw.utils.MacUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRED)
 public class LuckyUserServiceImpl implements LuckyUserService {
 
     @Autowired
