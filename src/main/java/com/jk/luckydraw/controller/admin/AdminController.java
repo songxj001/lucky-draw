@@ -36,6 +36,7 @@ public class AdminController {
     @Value("${img.serverpath}")
     private String serverpath;
 
+
     @RequestMapping("delLuckyHistory")
     @ResponseBody
     public Boolean delLuckyHistory(Integer[] ids){
@@ -176,6 +177,7 @@ public class AdminController {
     @RequestMapping("upload")
     @ResponseBody
     public HashMap upload(MultipartFile file,HttpServletRequest request){
+        System.out.println("上传");
         HashMap<String, Object> result = new HashMap<>();
         String fileUpload = FileUtil.FileUpload(file, request, location);
         result.put("code",0);

@@ -1,5 +1,5 @@
 server:
-  port: ${prot:80}
+  port: ${prot:8080}
   tomcat:
     uri-encoding: UTF-8
   connection-timeout: 180000
@@ -20,7 +20,7 @@ spring:
       max-request-size: 1024
 img:
   location: ${location:/Users/songxuejun/work/tools/imgserver/apache-tomcat-8.5.31/webapps/ROOT/}
-  serverpath: ${serverpath:http://127.0.0.1:8082/}
+  serverpath: ${serverpath:http://192.168.1.29:8082/}
 
 
 

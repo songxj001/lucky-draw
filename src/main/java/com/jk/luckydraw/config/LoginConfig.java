@@ -18,7 +18,8 @@ public class LoginConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/admin/toLoginPage")
                 .excludePathPatterns("/lucky/reg")
                 .excludePathPatterns("/lucky/save")
-                .excludePathPatterns("/admin/login");
+                .excludePathPatterns("/admin/login")
+                .excludePathPatterns("/jkjw/**");
 
     }
 }
