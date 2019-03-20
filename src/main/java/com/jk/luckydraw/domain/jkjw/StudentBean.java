@@ -20,4 +20,6 @@ public class StudentBean {
     private String email;
 
     private Integer classId;
+
+    private String idCard;
 }

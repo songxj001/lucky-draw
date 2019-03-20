@@ -1,10 +1,14 @@
 package com.jk.luckydraw.service.user;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jk.luckydraw.config.ConstantConf;
 import com.jk.luckydraw.domain.lucky.LuckyHistoryBean;
 import com.jk.luckydraw.domain.lucky.LuckyPersonBean;
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.domain.user.UserBean;
 import com.jk.luckydraw.mapper.user.UserMapper;
+import com.jk.luckydraw.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,6 +46,11 @@ public class UserServiceImpl implements UserService {
         session.setAttribute(session.getId(),userInfo);
         //登录成功
         result.put("code","0");
+        //保存jwt认证信息
+        String jsonString = JSON.toJSONString(userInfo);
+        HashMap hashMap = JSONObject.parseObject(jsonString, HashMap.class);
+        String jwt = JwtUtils.createJWT(userInfo.getId().toString(), userInfo.getAccount(), ConstantConf.JWT_TTL, hashMap);
+        result.put("token",jwt);
         return result;
     }
 

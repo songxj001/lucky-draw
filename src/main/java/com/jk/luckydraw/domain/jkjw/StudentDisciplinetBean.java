@@ -26,4 +26,7 @@ public class StudentDisciplinetBean {
     private String detail;
 
     private Date createTime;
+
+    private Integer studentId;
+
 }

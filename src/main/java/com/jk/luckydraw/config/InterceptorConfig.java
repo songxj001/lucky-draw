@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -20,6 +20,12 @@ public class LoginConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/lucky/save")
                 .excludePathPatterns("/admin/login")
                 .excludePathPatterns("/jkjw/**");
+        registry.addInterceptor(new SysInterceptor())
+                .addPathPatterns("/jkjw/**")
+                .excludePathPatterns("/jkjw/login")
+                .excludePathPatterns("/jkjw/upload")
+                .excludePathPatterns("/jkjw/studentLogin")
+                .excludePathPatterns("/jkjw/sendStudentLoginCode");
 
     }
 }

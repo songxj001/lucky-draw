@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +38,22 @@ public class JkjwServiceImpl implements JkjwService {
         HashMap<String, Object> result = new HashMap<>();
         //通过学生姓名和班级查询学生唯一信息
         String studentName = studentDisciplinetBean.getStudentName();
-        Integer classId = studentDisciplinetBean.getClassId();
+        Integer studentId = studentDisciplinetBean.getStudentId();
         try {
-            StudentBean studentBean = jkjwMapper.queryUserInfoByNameAndClassId(studentName,classId);
-            if (studentBean == null){
+            List<StudentBean> studentBeans = jkjwMapper.queryUserInfoByNameAndClassId(studentDisciplinetBean);
+            if (studentBeans == null || studentBeans.size() <= 0){
                 result.put("code",1);
                 result.put("msg","没有查到该学生信息，请核对");
                 return result;
             }
+            //判断是否有重名学生
+            if (studentBeans.size() > 1){
+                result.put("code",5);
+                result.put("msg","发现重名学生，请选择对应学生的身份证号");
+                result.put("data",studentBeans);
+                return result;
+            }
+            StudentBean studentBean = studentBeans.get(0);
             //通过违纪id查询违纪的详细信息
             Integer disciplinetId = studentDisciplinetBean.getDisciplinetId();
             DisciplinetBean disciplinetBean = jkjwMapper.queryWjInfoById(disciplinetId);
@@ -63,15 +73,23 @@ public class JkjwServiceImpl implements JkjwService {
             //保存违纪处理记录
             studentDisciplinetBean.setScore(disciplinetBean.getScore());
             studentDisciplinetBean.setScoreType(1);
-            studentDisciplinetBean.setCreateTime(new Date());
+            studentDisciplinetBean.setStudentId(studentBean.getId());
+            Date nowDate = new Date();
+            studentDisciplinetBean.setCreateTime(nowDate);
             jkjwMapper.saveStudentDisciplinet(studentDisciplinetBean);
             result.put("code",0);
             result.put("msg","提交成功");
+            //发送短信通知
+            //剩余分数
+            int remainingScore = studentBean.getScore()-disciplinetScore;
+            Thread thread = new Thread(new SendSms(studentBean.getName(),disciplinetBean.getTitle(),disciplinetScore,remainingScore,studentBean.getPhonenumber()));
+            thread.start();
+
             return result;
         }catch (Exception e){
             e.printStackTrace();
             result.put("code",2);
-            result.put("msg","查询学生信息异常，可能班级有重名");
+            result.put("msg","查询学生信息异常");
             return result;
         }
     }
@@ -79,5 +97,30 @@ public class JkjwServiceImpl implements JkjwService {
     @Override
     public List<Map> queryWjl() {
         return jkjwMapper.queryWjl();
+    }
+
+    @Override
+    public List<Map> queryMouthsWjl() {
+        return jkjwMapper.queryMouthsWjl();
+    }
+
+    @Override
+    public Map queryStudentWjList(String phone, String password, HttpSession session) {
+        HashMap<String, Object> result = new HashMap<>();
+        Object attribute = session.getAttribute(phone);
+        if (attribute == null || !attribute.toString().equals(password)){
+            result.put("code",1);
+            result.put("msg","验证码错误");
+            return result;
+        }
+        //查询学生信息，
+        List<StudentBean> studentBeans = jkjwMapper.queryStudentList(phone);
+        StudentBean studentBean = studentBeans.get(0);
+        //查询违纪信息
+        List<Map> wjList = jkjwMapper.queryWjListByName(studentBean.getName());
+        result.put("code",0);
+        result.put("msg","成功");
+        result.put("data",wjList);
+        return result;
     }
 }
