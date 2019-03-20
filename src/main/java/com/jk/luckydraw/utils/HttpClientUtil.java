@@ -1,7 +1,6 @@
 package com.jk.luckydraw.utils;
  
 import java.net.URI;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
