@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://${jdbchost:127.0.0.1}:3306/jk?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: root
+    password: JK@666bj=888
     driver-class-name: com.mysql.cj.jdbc.Driver
   thymeleaf:
     prefix: classpath:/templates/
@@ -20,7 +20,7 @@ spring:
       max-request-size: 1024
 img:
   location: /root/lucky/imgservice/apache-tomcat-8.5.31/webapps/ROOT/
-  serverpath: http://www.jinkeit.cn:8082/
+  serverpath: http://123.56.196.195:8082/
 
 
 
