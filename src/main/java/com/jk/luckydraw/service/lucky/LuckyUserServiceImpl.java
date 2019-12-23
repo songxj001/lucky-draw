@@ -44,7 +44,7 @@ public class LuckyUserServiceImpl implements LuckyUserService {
             result.put("icon",6);
             return result;
         }
-        String originalFilename = fileImg.getOriginalFilename();
+        //String originalFilename = fileImg.getOriginalFilename();
         String fileUpload = FileUtil.FileUpload(fileImg, request,location);
         luckyUserBean.setPhoto(serverpath+fileUpload);
         try {

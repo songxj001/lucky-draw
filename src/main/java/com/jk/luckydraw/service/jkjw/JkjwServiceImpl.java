@@ -1,5 +1,6 @@
 package com.jk.luckydraw.service.jkjw;
 
+import com.jk.luckydraw.common.CommonConf;
 import com.jk.luckydraw.domain.jkjw.DisciplinetBean;
 import com.jk.luckydraw.domain.jkjw.StudentBean;
 import com.jk.luckydraw.domain.jkjw.StudentDisciplinetBean;
@@ -74,17 +75,18 @@ public class JkjwServiceImpl implements JkjwService {
             studentDisciplinetBean.setScore(disciplinetBean.getScore());
             studentDisciplinetBean.setScoreType(1);
             studentDisciplinetBean.setStudentId(studentBean.getId());
-            Date nowDate = new Date();
-            studentDisciplinetBean.setCreateTime(nowDate);
+            studentDisciplinetBean.setCreateTime(new Date());
             jkjwMapper.saveStudentDisciplinet(studentDisciplinetBean);
             result.put("code",0);
             result.put("msg","提交成功");
-            //发送短信通知
-            //剩余分数
-            int remainingScore = studentBean.getScore()-disciplinetScore;
-            Thread thread = new Thread(new SendSms(studentBean.getName(),disciplinetBean.getTitle(),disciplinetScore,remainingScore,studentBean.getPhonenumber()));
-            thread.start();
-
+            //判断短信开关
+            if (CommonConf.SMS_SWITCH){
+                //发送短信通知
+                //剩余分数
+                int remainingScore = studentBean.getScore()-disciplinetScore;
+                Thread thread = new Thread(new SendSms(studentBean.getName(),disciplinetBean.getTitle(),disciplinetScore,remainingScore,studentBean.getPhonenumber()));
+                thread.start();
+            }
             return result;
         }catch (Exception e){
             e.printStackTrace();

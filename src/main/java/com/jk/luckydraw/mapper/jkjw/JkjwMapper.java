@@ -14,6 +14,7 @@ import static org.apache.ibatis.jdbc.SelectBuilder.SELECT;
 import static org.apache.ibatis.jdbc.SelectBuilder.WHERE;
 
 public interface JkjwMapper {
+
     @Select("select tc.id,tc.className,tt.`name`,tt.id as teacherId from t_class tc left join t_teacher tt on tc.teacherId = tt.id order by tc.createtTime desc")
     List<Map> queryClassList();
 
