@@ -19,7 +19,7 @@ spring:
       max-file-size: 1024
       max-request-size: 1024
 img:
-  location: ${location:d://}
+  location: ${location:/Users/songxuejun/work/tools/imgserver/apache-tomcat-8.5.31/webapps/ROOT/}
   serverpath: ${serverpath:http://127.0.0.1:8082/}
 
 

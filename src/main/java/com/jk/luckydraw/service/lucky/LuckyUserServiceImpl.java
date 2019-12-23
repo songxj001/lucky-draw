@@ -2,7 +2,10 @@ package com.jk.luckydraw.service.lucky;
 
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.mapper.lucky.LuckyUserMapper;
-import com.jk.luckydraw.utils.*;
+import com.jk.luckydraw.utils.FileUtil;
+import com.jk.luckydraw.utils.GetMacAddress;
+import com.jk.luckydraw.utils.IpUtil;
+import com.jk.luckydraw.utils.MacUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,13 +44,10 @@ public class LuckyUserServiceImpl implements LuckyUserService {
             result.put("icon",6);
             return result;
         }
+        String originalFilename = fileImg.getOriginalFilename();
+        String fileUpload = FileUtil.FileUpload(fileImg, request,location);
+        luckyUserBean.setPhoto(serverpath+fileUpload);
         try {
-            String originalFilename = fileImg.getOriginalFilename();
-            //  String fileUpload = FileUtil.FileUpload(fileImg, request,location);
-            //上传图片并压缩
-            String resize = ImageUtils.resize(fileImg.getInputStream(), 400, 400,true, serverpath);
-            luckyUserBean.setPhoto(resize);
-            //luckyUserBean.setPhoto(serverpath+fileUpload);
             luckyUserMapper.saveLuckyUser(luckyUserBean);
             result.put("code",0);
             result.put("msg","参与成功,祝您中大奖");
