@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
 public class LuckyUserServiceImpl implements LuckyUserService {
 
     @Autowired
@@ -29,6 +29,7 @@ public class LuckyUserServiceImpl implements LuckyUserService {
 
     @Value("${img.serverpath}")
     private String serverpath;
+
     @Override
     public HashMap save(LuckyUserBean luckyUserBean, MultipartFile fileImg, HttpServletRequest request) {
         HashMap<String, Object> result = new HashMap<>();
@@ -44,10 +45,9 @@ public class LuckyUserServiceImpl implements LuckyUserService {
             result.put("icon",6);
             return result;
         }
-        String originalFilename = fileImg.getOriginalFilename();
-        String fileUpload = FileUtil.FileUpload(fileImg, request,location);
-        luckyUserBean.setPhoto(serverpath+fileUpload);
         try {
+            String fileUpload = FileUtil.FileUpload(fileImg, request,location);
+            luckyUserBean.setPhoto(serverpath+fileUpload);
             luckyUserMapper.saveLuckyUser(luckyUserBean);
             result.put("code",0);
             result.put("msg","参与成功,祝您中大奖");
