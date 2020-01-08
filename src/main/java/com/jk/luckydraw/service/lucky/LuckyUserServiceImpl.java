@@ -47,7 +47,11 @@ public class LuckyUserServiceImpl implements LuckyUserService {
         }
         try {
             String fileUpload = FileUtil.FileUpload(fileImg, request,location);
-            luckyUserBean.setPhoto(serverpath+fileUpload);
+            if (fileUpload == null){
+                luckyUserBean.setPhoto(serverpath+"images/user.jpg");
+            }else{
+                luckyUserBean.setPhoto(serverpath+fileUpload);
+            }
             luckyUserMapper.saveLuckyUser(luckyUserBean);
             result.put("code",0);
             result.put("msg","参与成功,祝您中大奖");
