@@ -68,3 +68,19 @@ CREATE TABLE `t_user` (
   `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for t_baoming_user
+-- ----------------------------
+DROP TABLE IF EXISTS `t_baoming_user`;
+CREATE TABLE `t_baoming_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `phoneNumber` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `mac` varchar(255) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -51,7 +51,6 @@ public class FileUtil {
 					scale = (200*1024f) / size  ;
 				}
 			}
-
 			ysImg = UUID.randomUUID().toString().replaceAll("-","")+".jpg";
 			if(size < 200*1024){
 				Thumbnails.of(savePath+newFileName).scale(1f).outputFormat("jpg").toFile(savePath+ysImg);

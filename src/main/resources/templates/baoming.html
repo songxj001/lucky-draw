@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="../js/layer/layer.js"></script>
+    <link rel="stylesheet" href="../js/layer/theme/default/layer.css">
+    <script src="../js/fingerprint2.min.1.5.1.js"></script>
+
+    <title>报名</title>
+</head>
+<style>
+    body{
+        background-image:  url("../images/bgbm.png");
+        background-repeat:no-repeat;
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+        background-color: #fed845;
+        background-size:100%;
+    }
+
+</style>
+<body>
+    <div class="container-fluid" style="margin-left: 21%;
+    margin-top: -7%;
+    position: absolute;
+    display: block;
+    height: 20px;
+    width: auto;
+    overflow: hidden;">
+        <marquee  direction="up" scrollamount="4">
+            <p>JAVA：预报名1000元优惠2000元</p>
+            <p>测试：预报名1000元优惠1000元</p>
+            <p>UI：预报名1000元优惠1000元</p>
+            <p>产品：预报名1000元优惠1000元</p>
+        </marquee>
+    </div>
+    <div class="container-fluid" style="margin-top: 78%;">
+        <form id="luckyUser" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputName" class="col-xs-3 control-label text-center">
+                    <h5>姓名:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="text" name="name" maxlength="4" min="2" class="form-control" id="inputName" placeholder="请输入您的姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAge" class="col-xs-3 control-label text-center">
+                    <h5>年龄:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="number" name="age" maxlength="2" min="2" class="form-control" id="inputAge" placeholder="请输入您的年龄">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label text-center">
+                    <h5>电话:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="number" pattern="\d*" name="phoneNumber" oninput="if(value.length>11)value=value.slice(0,11)"  class="form-control" placeholder="请输入您的电话">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress" class="col-xs-3 control-label text-center">
+                    <h5>地址:</h5>
+                </label>
+                <div class="col-xs-9">
+                    <input type="text" name="address" class="form-control" id="inputAddress" placeholder="请输入您的地址">
+                </div>
+            </div>
+        </form>
+        <div class="footer" style="margin-bottom: 10px;">
+            <button id="saveBtn" class="btn btn-lg btn-block btn-success"><i class="glyphicon glyphicon-ok"></i> 提交 </button>
+        </div>
+    </div>
+</body>
+<script>
+    $("#saveBtn").click(function () {
+        //校验页面非空
+        var inputName = $("#inputName").val();
+        var inputAge = $("#inputAge").val();
+        var inputAddress = $("#inputAddress").val();
+        var phoneNumber = $("input[name='phoneNumber']").val();
+
+        if(inputName == null || inputName == ''
+            || inputAge == null || inputAge == ''
+            || inputAddress == null || inputAddress == ''
+            || phoneNumber == null || phoneNumber == ''){
+            layer.alert("请填写完整页面信息哦",{icon:6});
+            return
+        }
+        if(phoneNumber.length != 11){
+            layer.alert("电话必须输入11位手机号哦",{icon:6});
+            return
+        }
+        var index = layer.load(0, {shade: false});
+        //获取浏览器指纹
+        var fp = new Fingerprint2();
+        fp.get(function(result){
+            var form = new FormData(document.getElementById("luckyUser"));
+            $.ajax({
+                url:"../lucky/saveBaoMingUser",
+                headers: {
+                    mac: result
+                },
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                dataType:'json',
+                async:false,
+                timeout:6000,
+                success:function(data){
+                    layer.close(index);
+                    layer.alert(data.msg,{icon:data.icon})
+                },
+                error:function(e){
+                    layer.close(index);
+                    layer.alert("报名失败了,请重新扫码报名",{icon:5});
+                }
+            });
+        });
+
+
+    })
+    
+</script>
+</html>

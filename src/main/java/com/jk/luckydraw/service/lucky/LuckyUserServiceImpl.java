@@ -1,5 +1,6 @@
 package com.jk.luckydraw.service.lucky;
 
+import com.jk.luckydraw.domain.user.BaoMingUserBean;
 import com.jk.luckydraw.domain.user.LuckyUserBean;
 import com.jk.luckydraw.mapper.lucky.LuckyUserMapper;
 import com.jk.luckydraw.utils.FileUtil;
@@ -62,6 +63,19 @@ public class LuckyUserServiceImpl implements LuckyUserService {
             result.put("msg","网络不给力,请稍后再试");
             result.put("icon",5);
         }
+        return result;
+    }
+
+    @Override
+    public HashMap saveBaoMingUser(BaoMingUserBean baoMingUserBean, HttpServletRequest request) {
+        HashMap<String, Object> result = new HashMap<>();
+        //获取用户的浏览器指纹
+        String mac = request.getHeader("mac");
+        baoMingUserBean.setMac(mac);
+        luckyUserMapper.saveBaoMingUser(baoMingUserBean);
+        result.put("code",0);
+        result.put("msg","报名成功，随后老师会联系你哦");
+        result.put("icon",6);
         return result;
     }
 }
