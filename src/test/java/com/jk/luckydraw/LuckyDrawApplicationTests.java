@@ -11,7 +11,7 @@ public class LuckyDrawApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println("测试2");
+        System.out.println("测试3");
     }
 
 }
