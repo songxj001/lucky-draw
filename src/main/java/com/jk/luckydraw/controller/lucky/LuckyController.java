@@ -27,6 +27,8 @@ public class LuckyController {
     @ResponseBody
     public HashMap saveBaoMingUser(BaoMingUserBean baoMingUserBean, HttpServletRequest request){
         System.out.println("BUG被解决");
+        System.out.println("冲突1");
+        System.out.println("冲突2");
         String userAgent = request.getHeader("user-agent");
         if (userAgent.indexOf("MicroMessenger") > 0){
             return luckyUserService.saveBaoMingUser(baoMingUserBean,request);
